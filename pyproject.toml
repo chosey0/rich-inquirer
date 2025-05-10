@@ -1,0 +1,24 @@
+[project]
+name = "rich-inquirer"
+version = "0.1.0"
+description = "Interactive CLI prompts using Rich and readchar, inspired by python-inquirer"
+authors = [
+    { name="Your Name", email="you@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+
+dependencies = [
+    "rich>=13.0.0",
+    "readchar>=4.0.0",
+    "rapidfuzz>=3.0.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourname/rich-inquirer"
+"Repository" = "https://github.com/yourname/rich-inquirer"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
