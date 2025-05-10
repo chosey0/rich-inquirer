@@ -1,10 +1,10 @@
-from src import (
+from rich_inquirer.prompt import (
     TextPrompt,
     SelectPrompt,
     ConfirmPrompt,
     FuzzyPrompt,
 )
-from src.base.choice import Choice
+from rich_inquirer.base.choice import Choice
 from rich.console import Console
 
 # Example

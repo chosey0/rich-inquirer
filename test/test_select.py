@@ -1,6 +1,6 @@
 import pytest
-from src import SelectPrompt
-from src.base import Choice
+from rich_inquirer.prompt import SelectPrompt
+from rich_inquirer.base import Choice
 
 
 def test_select_prompt(monkeypatch):

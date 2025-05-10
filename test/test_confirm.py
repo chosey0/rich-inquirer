@@ -1,5 +1,5 @@
 import pytest
-from src import ConfirmPrompt
+from rich_inquirer.prompt import ConfirmPrompt
 
 
 def test_confirm_prompt_true(monkeypatch):

@@ -1,6 +1,6 @@
 import pytest
-from src import FuzzyPrompt
-from src.base import Choice
+from rich_inquirer.prompt import FuzzyPrompt
+from rich_inquirer.base import Choice
 
 
 def test_fuzzy_prompt(monkeypatch):
