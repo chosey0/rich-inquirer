@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.realpath("."))
 
 from src.context import PromptContext
-from src.base.choice import Choice
+from src import TextPrompt, SelectPrompt, ConfirmPrompt
 
 context = PromptContext()
 
