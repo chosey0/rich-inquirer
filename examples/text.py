@@ -1,9 +1,5 @@
-import os
-import sys
+from rich_inquirer.prompt import TextPrompt
 
-sys.path.append(os.path.realpath("."))
-
-from src import TextPrompt
 
 prompt = TextPrompt("Enter your text:")
 result = prompt.ask()

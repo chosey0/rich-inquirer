@@ -1,10 +1,5 @@
-import os
-import sys
-
-sys.path.append(os.path.realpath("."))
-
-from src.prompt import FuzzyPrompt
-from src.base.choice import Choice
+from rich_inquirer.prompt import FuzzyPrompt
+from rich_inquirer.base.choice import Choice
 
 
 choices = [

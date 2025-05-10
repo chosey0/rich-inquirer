@@ -1,19 +1,10 @@
-import os
-import sys
-
-sys.path.append(os.path.realpath("."))
-
-from src.context import PromptContext
-from src import TextPrompt, SelectPrompt, ConfirmPrompt
+from rich_inquirer.context import PromptContext
+from rich_inquirer.prompt import TextPrompt, SelectPrompt, ConfirmPrompt
 
 context = PromptContext()
-
-context.add("username", TextPrompt("Enter your name:"))
-context.add("language", SelectPrompt("Select language:", ["Python", "Rust", "Go"]))
-context.add("confirm", ConfirmPrompt("Do you want to continue?", default=True))
+context.add("name", TextPrompt("Enter your name:"))
+context.add("lang", SelectPrompt("Choose language:", ["Python", "Go", "Rust"]))
+context.add("confirm", ConfirmPrompt("Continue?", default=True))
 
 results = context.run()
-
-print("\n[Prompt Summary]")
-for key, value in results.items():
-    print(f"{key}: {value}")
+print(results)

@@ -1,9 +1,4 @@
-import os
-import sys
-
-sys.path.append(os.path.realpath("."))
-
-from src import TextPrompt
+from rich_inquirer.prompt import TextPrompt
 
 prompt = TextPrompt("Enter your password:", password=True)
 result = prompt.ask()
