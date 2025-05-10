@@ -5,8 +5,9 @@ description = "Interactive CLI prompts using Rich and readchar, inspired by pyth
 authors = [
     { name="Choi Seokgyu", email="csq1404@gmail.com" }
 ]
+
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.8"
 
 dependencies = [
