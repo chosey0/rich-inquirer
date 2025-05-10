@@ -1,6 +1,6 @@
 [project]
 name = "rich-inquirer"
-version = "0.1.0"
+version = "0.1.1"
 description = "Interactive CLI prompts using Rich and readchar, inspired by python-inquirer"
 authors = [
     { name="Choi Seokgyu", email="csq1404@gmail.com" }
