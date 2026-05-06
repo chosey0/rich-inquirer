@@ -27,6 +27,12 @@ confirmed = ConfirmPrompt("Continue?", default=True).ask()
 match = FuzzyPrompt("Search language:", ["Python", "TypeScript", "Rust"]).ask()
 ```
 
+The prompt classes are also available from the top-level package:
+
+```python
+from rich_inquirer import TextPrompt
+```
+
 Use `Choice` when the displayed label should differ from the returned value.
 
 ```python
@@ -62,7 +68,6 @@ If a prompt is cancelled with `Esc`, `PromptContext.run()` stops and returns the
 ## Development
 
 ```bash
-pip install -e .
-pip install pytest
+pip install -e ".[dev]"
 pytest
 ```

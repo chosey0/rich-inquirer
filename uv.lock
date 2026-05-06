@@ -578,9 +578,6 @@ name = "rich-inquirer"
 version = "0.1.3"
 source = { editable = "." }
 dependencies = [
-    { name = "pytest", version = "8.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
-    { name = "pytest", version = "8.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
-    { name = "pytest", version = "9.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "rapidfuzz", version = "3.9.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
     { name = "rapidfuzz", version = "3.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
     { name = "rapidfuzz", version = "3.14.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
@@ -589,13 +586,21 @@ dependencies = [
     { name = "rich", version = "15.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
 ]
 
+[package.optional-dependencies]
+dev = [
+    { name = "pytest", version = "8.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
+    { name = "pytest", version = "8.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
+    { name = "pytest", version = "9.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+]
+
 [package.metadata]
 requires-dist = [
-    { name = "pytest", specifier = ">=8.3.5" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
     { name = "rapidfuzz", specifier = ">=3.0.0" },
     { name = "readchar", specifier = ">=4.0.0" },
     { name = "rich", specifier = ">=13.0.0" },
 ]
+provides-extras = ["dev"]
 
 [[package]]
 name = "tomli"
