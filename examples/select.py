@@ -1,4 +1,9 @@
-import os
-import sys
+from rich_inquirer.prompt import SelectPrompt
 
-sys.path.append(os.path.realpath("."))
+
+prompt = SelectPrompt(
+    "Choose your favorite programming language:",
+    ["Python", "Rust", "Go", "JavaScript"],
+)
+result = prompt.ask()
+prompt.console.log(result)

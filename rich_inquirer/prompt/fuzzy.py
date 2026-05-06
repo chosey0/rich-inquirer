@@ -18,6 +18,10 @@ class FuzzyPrompt(BasePrompt):
         self.emoji = Emoji("magnifying_glass_tilted_right")
         super().__init__(message, **kwargs)
         self.all_choices: List[Choice] = self._normalize_choices(choices)
+        if not self.all_choices:
+            raise ValueError("FuzzyPrompt requires at least one choice")
+        if limit < 1:
+            raise ValueError("FuzzyPrompt limit must be at least 1")
         self.filtered_choices: List[Choice] = self.all_choices[:limit]
         self.input_buffer = ""
         self.cursor_index = 0

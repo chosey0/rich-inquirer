@@ -16,6 +16,8 @@ class SelectPrompt(BasePrompt):
         self.emoji = Emoji("question_mark")
         super().__init__(message, **kwargs)
         self.choices: List[Choice] = self._normalize_choices(choices)
+        if not self.choices:
+            raise ValueError("SelectPrompt requires at least one choice")
         self.selected_index = 0
 
     def render(self) -> Table:

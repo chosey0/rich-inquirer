@@ -35,3 +35,10 @@ class TextPrompt(BasePrompt):
             self.done = True
         elif len(k) == 1 and k.isprintable():
             self.buffer += k
+
+    def _format_result(self) -> str:
+        if self.result is None:
+            return ""
+        if self.password:
+            return "*" * len(self.result)
+        return str(self.result)

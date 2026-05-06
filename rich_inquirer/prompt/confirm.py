@@ -15,7 +15,8 @@ class ConfirmPrompt(BasePrompt):
         table.show_edge = False
         table.pad_edge = False
 
-        table.add_row(self.message, Text("[Y/n]", style="bold green"))
+        label = "[Y/n]" if self.default else "[y/N]"
+        table.add_row(self.message, Text(label, style="bold green"))
         return table
 
     def handle_key(self, k: str) -> None:

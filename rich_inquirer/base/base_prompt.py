@@ -50,12 +50,12 @@ class BasePrompt(ABC):
 
         thread.join()
 
-        try:
-            self.console.print(self.message, Text(self.result, style="bold green"))
-        except Exception as e:
-            self.console.print(self.message, Text(f"{self.result}", style="bold green"))
+        self.console.print(self.message, Text(self._format_result(), style="bold green"))
 
         return self.result
+
+    def _format_result(self) -> str:
+        return "" if self.result is None else str(self.result)
 
     def _normalize_choices(
         self, choices: Union[List[str], List[Choice], List[tuple]]

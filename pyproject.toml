@@ -13,7 +13,8 @@ requires-python = ">=3.8"
 dependencies = [
     "rich>=13.0.0",
     "readchar>=4.0.0",
-    "rapidfuzz>=3.0.0"
+    "rapidfuzz>=3.0.0",
+    "pytest>=8.3.5",
 ]
 
 [project.urls]
@@ -24,8 +25,8 @@ dependencies = [
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["rich_inquirer"]
+[tool.setuptools.packages.find]
+include = ["rich_inquirer", "rich_inquirer.*"]
 
 [tool.setuptools.package-data]
 "rich_inquirer" = ["**/*.py"]
