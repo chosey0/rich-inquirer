@@ -575,7 +575,7 @@ wheels = [
 
 [[package]]
 name = "rich-inquirer"
-version = "0.1.7"
+version = "0.1.8"
 source = { editable = "." }
 dependencies = [
     { name = "rapidfuzz", version = "3.9.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
