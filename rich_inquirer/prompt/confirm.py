@@ -19,7 +19,7 @@ class ConfirmPrompt(BasePrompt):
         table.add_row(self.message, Text(label, style="bold green"))
         return table
 
-    def handle_key(self, k: str) -> None:
+    def _handle_key(self, k: str) -> None:
         if k.lower() == "y":
             self.result = True
             self.done = True
@@ -28,7 +28,4 @@ class ConfirmPrompt(BasePrompt):
             self.done = True
         elif k == key.ENTER:
             self.result = self.default
-            self.done = True
-        elif k == key.ESC:
-            self.result = None
             self.done = True

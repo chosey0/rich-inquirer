@@ -38,14 +38,11 @@ class SelectPrompt(BasePrompt):
 
         return table
 
-    def handle_key(self, k: str) -> None:
+    def _handle_key(self, k: str) -> None:
         if k == key.UP:
             self.selected_index = (self.selected_index - 1) % len(self.choices)
         elif k == key.DOWN:
             self.selected_index = (self.selected_index + 1) % len(self.choices)
         elif k == key.ENTER:
             self.result = self.choices[self.selected_index].value
-            self.done = True
-        elif k == key.ESC:
-            self.result = None
             self.done = True

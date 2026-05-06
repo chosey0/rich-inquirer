@@ -58,7 +58,7 @@ class FuzzyPrompt(BasePrompt):
         self.filtered_choices = [c for c, _ in scored[: self.limit]]
         self.cursor_index = 0  # reset to top match
 
-    def handle_key(self, k: str) -> None:
+    def _handle_key(self, k: str) -> None:
         if k == key.ENTER:
             if self.filtered_choices:
                 self.result = self.filtered_choices[self.cursor_index].value
@@ -72,9 +72,6 @@ class FuzzyPrompt(BasePrompt):
             self.cursor_index = (self.cursor_index - 1) % len(self.filtered_choices)
         elif k == key.DOWN:
             self.cursor_index = (self.cursor_index + 1) % len(self.filtered_choices)
-        elif k == key.ESC:
-            self.result = None
-            self.done = True
         elif len(k) == 1 and k.isprintable():
             self.input_buffer += k
             self._fuzzy_filter()

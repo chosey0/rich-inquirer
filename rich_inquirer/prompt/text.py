@@ -24,15 +24,12 @@ class TextPrompt(BasePrompt):
         )
         return table
 
-    def handle_key(self, k: str) -> None:
+    def _handle_key(self, k: str) -> None:
         if k == key.ENTER:
             self.result = self.buffer
             self.done = True
         elif k == key.BACKSPACE:
             self.buffer = self.buffer[:-1]
-        elif k == key.ESC:
-            self.result = None
-            self.done = True
         elif len(k) == 1 and k.isprintable():
             self.buffer += k
 
