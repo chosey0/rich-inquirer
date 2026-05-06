@@ -1,7 +1,7 @@
 import time
 import threading
 from readchar import readkey
-from typing import List, Union
+from typing import Callable, List, Union
 from abc import ABC, abstractmethod
 
 from rich.console import Console
@@ -16,9 +16,15 @@ from .choice import Choice
 class BasePrompt(ABC):
     emoji: Emoji
 
-    def __init__(self, message: str, console: Console = None):
+    def __init__(
+        self,
+        message: str,
+        console: Console = None,
+        read_key: Callable[[], str] = readkey,
+    ):
         self.message = Text(f"{self.emoji} {message}", style="bold black")
         self.console = console or Console()
+        self.read_key = read_key
         self.result = None
         self.done = False
 
@@ -34,7 +40,7 @@ class BasePrompt(ABC):
 
     def _key_loop(self):
         while not self.done:
-            k = readkey()
+            k = self.read_key()
             self.handle_key(k)
 
     def ask(self):
@@ -48,7 +54,7 @@ class BasePrompt(ABC):
                 live.update(self.render())
                 time.sleep(0.01)
 
-        thread.join()
+        thread.join(timeout=0.1)
 
         self.console.print(self.message, Text(self._format_result(), style="bold green"))
 

@@ -1,9 +1,13 @@
 from typing import Dict, Any, List, Tuple
+
+from rich.console import Console
+
 from .base import BasePrompt
 
 
 class PromptContext:
-    def __init__(self):
+    def __init__(self, console: Console = None):
+        self.console = console or Console()
         self._flow: List[Tuple[str, BasePrompt]] = []
         self._results: Dict[str, Any] = {}
 
@@ -17,7 +21,9 @@ class PromptContext:
         for name, prompt in self._flow:
             result = prompt.ask()
             if result is None:
-                print(f"[!] Prompt '{name}' was cancelled. Aborting flow.")
+                self.console.print(
+                    f"[yellow][!] Prompt '{name}' was cancelled. Aborting flow.[/yellow]"
+                )
                 return self._results
             self._results[name] = result
         return self._results
