@@ -29,3 +29,18 @@ def test_password_prompt_formats_result_as_mask():
 
     assert prompt.result == "secret"
     assert prompt._format_result() == "******"
+
+
+def test_text_prompt_cancel():
+    prompt = TextPrompt("Enter:")
+    prompt.handle_key(key.ESC)
+
+    assert prompt.result is None
+    assert prompt.done is True
+
+
+def test_text_prompt_uses_injected_read_key():
+    keys = iter(["O", "K", key.ENTER])
+    prompt = TextPrompt("Enter:", read_key=lambda: next(keys))
+
+    assert prompt.ask() == "OK"

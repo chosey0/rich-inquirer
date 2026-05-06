@@ -30,3 +30,11 @@ def test_fuzzy_prompt_requires_choices():
 def test_fuzzy_prompt_requires_positive_limit():
     with pytest.raises(ValueError):
         FuzzyPrompt("Choose:", ["apple"], limit=0)
+
+
+def test_fuzzy_prompt_cancel():
+    prompt = FuzzyPrompt("Choose:", ["apple"])
+    prompt.handle_key(key.ESC)
+
+    assert prompt.result is None
+    assert prompt.done is True
