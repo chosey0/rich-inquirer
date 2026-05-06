@@ -44,3 +44,10 @@ def test_text_prompt_uses_injected_read_key():
     prompt = TextPrompt("Enter:", read_key=lambda: next(keys))
 
     assert prompt.ask() == "OK"
+
+
+def test_text_prompt_ask_cancels_with_injected_escape():
+    prompt = TextPrompt("Enter:", read_key=lambda: key.ESC)
+
+    assert prompt.ask() is None
+    assert prompt.done is True
