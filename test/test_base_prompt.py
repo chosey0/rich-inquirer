@@ -5,7 +5,11 @@ import time
 
 from readchar import key
 
-from rich_inquirer.base.base_prompt import _read_key
+from rich_inquirer.base.base_prompt import (
+    BRACKETED_PASTE_END,
+    BRACKETED_PASTE_START,
+    _read_key,
+)
 
 
 def _read_from_pty(monkeypatch, value: str, escape_timeout: float = 0.1) -> str:
@@ -33,3 +37,13 @@ def test_read_key_returns_lone_escape(monkeypatch):
 
 def test_read_key_preserves_escape_sequences(monkeypatch):
     assert _read_from_pty(monkeypatch, key.DOWN) == key.DOWN
+
+
+def test_read_key_returns_available_pasted_text(monkeypatch):
+    assert _read_from_pty(monkeypatch, "pasted text") == "pasted text"
+
+
+def test_read_key_extracts_bracketed_paste(monkeypatch):
+    value = f"{BRACKETED_PASTE_START}pasted text{BRACKETED_PASTE_END}"
+
+    assert _read_from_pty(monkeypatch, value) == "pasted text"

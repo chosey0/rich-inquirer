@@ -21,6 +21,22 @@ def test_text_prompt_backspace():
     assert prompt.result == "Tes"
 
 
+def test_text_prompt_accepts_pasted_text():
+    prompt = TextPrompt("Enter:")
+    prompt.handle_key("pasted text")
+    prompt.handle_key(key.ENTER)
+
+    assert prompt.result == "pasted text"
+
+
+def test_text_prompt_submits_pasted_text_with_newline():
+    prompt = TextPrompt("Enter:")
+    prompt.handle_key("pasted text\nignored")
+
+    assert prompt.result == "pasted text"
+    assert prompt.done is True
+
+
 def test_password_prompt_formats_result_as_mask():
     prompt = TextPrompt("Password:", password=True)
     for ch in "secret":
