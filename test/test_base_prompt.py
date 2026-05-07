@@ -43,7 +43,17 @@ def test_read_key_returns_available_pasted_text(monkeypatch):
     assert _read_from_pty(monkeypatch, "pasted text") == "pasted text"
 
 
+def test_read_key_returns_multibyte_text(monkeypatch):
+    assert _read_from_pty(monkeypatch, "한글") == "한글"
+
+
 def test_read_key_extracts_bracketed_paste(monkeypatch):
     value = f"{BRACKETED_PASTE_START}pasted text{BRACKETED_PASTE_END}"
 
     assert _read_from_pty(monkeypatch, value) == "pasted text"
+
+
+def test_read_key_extracts_multibyte_bracketed_paste(monkeypatch):
+    value = f"{BRACKETED_PASTE_START}한글 붙여넣기{BRACKETED_PASTE_END}"
+
+    assert _read_from_pty(monkeypatch, value) == "한글 붙여넣기"

@@ -29,6 +29,14 @@ def test_text_prompt_accepts_pasted_text():
     assert prompt.result == "pasted text"
 
 
+def test_text_prompt_accepts_multibyte_text():
+    prompt = TextPrompt("Enter:")
+    prompt.handle_key("한글")
+    prompt.handle_key(key.ENTER)
+
+    assert prompt.result == "한글"
+
+
 def test_text_prompt_submits_pasted_text_with_newline():
     prompt = TextPrompt("Enter:")
     prompt.handle_key("pasted text\nignored")
