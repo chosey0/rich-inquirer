@@ -4,7 +4,7 @@ import time
 import threading
 from readchar import key as readchar_key, readkey
 from readchar._config import config
-from typing import Callable, List, Union
+from typing import Callable, List, Optional, Union
 from abc import ABC, abstractmethod
 
 try:
@@ -36,11 +36,35 @@ def _read_key(escape_timeout: float = 0.1) -> str:
     old_settings = termios.tcgetattr(fd)
     term = termios.tcgetattr(fd)
 
+    def read_byte(timeout: Optional[float] = None) -> Union[bytes, None]:
+        if timeout is not None:
+            readable, _, _ = select.select([sys.stdin], [], [], timeout)
+            if not readable:
+                return None
+        return os.read(fd, 1)
+
+    def read_char(timeout: Optional[float] = None) -> Union[str, None]:
+        first = read_byte(timeout=timeout)
+        if first is None:
+            return None
+
+        data = first
+        while True:
+            try:
+                return data.decode()
+            except UnicodeDecodeError as exc:
+                if exc.reason != "unexpected end of data":
+                    raise
+                next_byte = read_byte(timeout=escape_timeout)
+                if next_byte is None:
+                    raise
+                data += next_byte
+
     def read_next(timeout: float = escape_timeout) -> Union[str, None]:
         readable, _, _ = select.select([sys.stdin], [], [], timeout)
         if not readable:
             return None
-        return os.read(fd, 1).decode()
+        return read_char()
 
     def read_escape_sequence() -> str:
         sequence = readchar_key.ESC
@@ -71,14 +95,14 @@ def _read_key(escape_timeout: float = 0.1) -> str:
     def read_bracketed_paste() -> str:
         text = ""
         while not text.endswith(BRACKETED_PASTE_END):
-            text += os.read(fd, 1).decode()
+            text += read_char()
         return text[: -len(BRACKETED_PASTE_END)]
 
     try:
         term[3] &= ~(termios.ICANON | termios.ECHO | termios.IGNBRK | termios.BRKINT)
         termios.tcsetattr(fd, termios.TCSAFLUSH, term)
 
-        c1 = os.read(fd, 1).decode()
+        c1 = read_char()
         if c1 in config.INTERRUPT_KEYS:
             raise KeyboardInterrupt
         if c1 != readchar_key.ESC:
