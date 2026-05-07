@@ -25,13 +25,18 @@ class TextPrompt(BasePrompt):
         return table
 
     def _handle_key(self, k: str) -> None:
-        if k == key.ENTER:
-            self.result = self.buffer
-            self.done = True
-        elif k == key.BACKSPACE:
-            self.buffer = self.buffer[:-1]
-        elif len(k) == 1 and k.isprintable():
-            self.buffer += k
+        if k.startswith(key.ESC):
+            return
+
+        for char in k:
+            if char == key.ENTER or char == "\r":
+                self.result = self.buffer
+                self.done = True
+                return
+            if char == key.BACKSPACE:
+                self.buffer = self.buffer[:-1]
+            elif char.isprintable():
+                self.buffer += char
 
     def _format_result(self) -> str:
         if self.result is None:

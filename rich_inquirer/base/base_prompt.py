@@ -23,6 +23,10 @@ from rich.emoji import Emoji
 from .choice import Choice
 
 
+BRACKETED_PASTE_START = "\x1b[200~"
+BRACKETED_PASTE_END = "\x1b[201~"
+
+
 def _read_key(escape_timeout: float = 0.1) -> str:
     """Read one key, treating a lone ESC as a complete keypress."""
     if select is None or termios is None:
@@ -38,6 +42,38 @@ def _read_key(escape_timeout: float = 0.1) -> str:
             return None
         return os.read(fd, 1).decode()
 
+    def read_escape_sequence() -> str:
+        sequence = readchar_key.ESC
+        introducer = read_next()
+        if introducer is None:
+            return sequence
+
+        sequence += introducer
+        if introducer not in "\x4f\x5b":
+            return sequence
+
+        while True:
+            char = read_next()
+            if char is None:
+                return sequence
+            sequence += char
+            if "\x40" <= char <= "\x7e":
+                return sequence
+
+    def read_available_text(first: str) -> str:
+        text = first
+        while True:
+            char = read_next(timeout=0)
+            if char is None:
+                return text
+            text += char
+
+    def read_bracketed_paste() -> str:
+        text = ""
+        while not text.endswith(BRACKETED_PASTE_END):
+            text += os.read(fd, 1).decode()
+        return text[: -len(BRACKETED_PASTE_END)]
+
     try:
         term[3] &= ~(termios.ICANON | termios.ECHO | termios.IGNBRK | termios.BRKINT)
         termios.tcsetattr(fd, termios.TCSAFLUSH, term)
@@ -46,24 +82,12 @@ def _read_key(escape_timeout: float = 0.1) -> str:
         if c1 in config.INTERRUPT_KEYS:
             raise KeyboardInterrupt
         if c1 != readchar_key.ESC:
-            return c1
+            return read_available_text(c1)
 
-        c2 = read_next()
-        if c2 is None:
-            return c1
-        if c2 not in "\x4F\x5B":
-            return c1 + c2
-
-        c3 = read_next()
-        if c3 is None or c3 not in "\x31\x32\x33\x35\x36":
-            return c1 + c2 + (c3 or "")
-
-        c4 = read_next()
-        if c4 is None or c4 not in "\x30\x31\x33\x34\x35\x37\x38\x39":
-            return c1 + c2 + c3 + (c4 or "")
-
-        c5 = read_next()
-        return c1 + c2 + c3 + c4 + (c5 or "")
+        sequence = read_escape_sequence()
+        if sequence == BRACKETED_PASTE_START:
+            return read_bracketed_paste()
+        return sequence
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
